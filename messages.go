@@ -20,6 +20,7 @@ var (
 	// Help command
 	helpCmd = `@bLooks like you need some help:
   @c- @{!y}gobi whoami@w: Tells you who you are, so where are the projects going to be created.
+  @c- @{!y}gobi cl <APPNAME>@w: Creates a simple command line app ready to use.
 `
 )
 
