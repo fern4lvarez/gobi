@@ -8,11 +8,12 @@ import (
 var (
 	// Command line errors
 	wrongNumberOfArguments = "@{!r}Wrong number of arguments, try again."
+	wrongArgument          = "@{!r}Wrong argument, try again."
 	noProjectName          = "@{!r}You need to specify a name."
 	directoryExists        = "@{!y}Oops! Looks like this directory already exists."
 
 	// Help messages
-	seeHelp = "@{!y}Wrong. @rSee ´gobi help´ for more info."
+	seeHelp = "@rSee ´gobi help´ for more info."
 
 	// Welcome message
 	sayHi = "@bSay hi to @{!r}gobi@b, your new favourite gopher friend!"

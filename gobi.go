@@ -13,18 +13,20 @@ func main() {
 		commandLineError(wrongNumberOfArguments)
 	} else {
 		user = checkConfig()
-		if first := os.Args[1]; first == "whoami" {
+
+		switch first := os.Args[1]; first {
+		case "whoami":
 			whoAreYou(user)
-		} else if first == "help" {
+		case "help":
 			help()
-		} else if first == "cl" {
+		case "cl":
 			if l < 3 {
 				commandLineError(noProjectName)
 			}
 			name := os.Args[2]
 			cl(user, name)
-		} else {
-			commandLineError(wrongNumberOfArguments)
+		default:
+			commandLineError(wrongArgument)
 		}
 	}
 }

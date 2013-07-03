@@ -16,7 +16,7 @@ func createFileFromTemplate(userFullName, projName, templ, dest string, info Pro
 func cl(user UserConfig, projName string) {
 	userFullName := user.FullName()
 	buildDir := filepath.Join(SRCPATH, userFullName, projName)
-	info := Project{projName, userFullName}
+	info := Project{projName, userFullName, "cl"}
 
 	if err := os.Mkdir(buildDir, 0744); err != nil {
 		commandLineError(directoryExists)
