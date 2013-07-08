@@ -8,8 +8,9 @@ import (
 
 func createFileFromTemplate(userFullName, projName, templ, dest string, info Project) {
 	filename := filepath.Join(SRCPATH, userFullName, projName, dest)
+	tempfile := filepath.Join(SRCPATH, userFullName, "gobi", templ)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		t, _ := template.ParseFiles(templ)
+		t, _ := template.ParseFiles(tempfile)
 		f, _ := os.Create(filename)
 		t.Execute(f, info)
 		fileCreated(filepath.Join(userFullName, projName, dest))
@@ -25,7 +26,7 @@ func cl(user UserConfig, projName string) {
 
 	info := Project{projName, userFullName, "cl"}
 
-	createFileFromTemplate(userFullName, projName, "templates/cl/clproj.go", secondName+".go", info)
+	createFileFromTemplate(userFullName, projName, "templates/cl/clproj.go.templ", secondName+".go", info)
 	createFileFromTemplate(userFullName, firstName, "templates/cl/README.md", "README.md", info)
 	createFileFromTemplate(userFullName, firstName, "templates/LICENSE", "LICENSE", info)
 	createFileFromTemplate(userFullName, firstName, "templates/VERSION", "VERSION", info)
