@@ -10,7 +10,8 @@ var (
 	wrongNumberOfArguments = "@{!r}Wrong number of arguments, try again."
 	wrongArgument          = "@{!r}Wrong argument, try again."
 	noProjectName          = "@{!r}You need to specify a name."
-	directoryExists        = "@{!y}Oops! Looks like this directory already exists."
+	wrongProjectName       = "@{!r}The project name is not valid."
+	projectExists          = "@{!y}Oops! Looks like this project already exists."
 
 	// Help messages
 	seeHelp = "@rSee ´gobi help´ for more info."
@@ -22,12 +23,13 @@ var (
 	helpCmd = `@bLooks like you need some help:
   @c- @{!y}gobi whoami@w: Tells you who you are, so where are the projects going to be created.
   @c- @{!y}gobi cl <APPNAME>@w: Creates a simple command line app ready to use.
+      @{!y}<APPNAME> @|can have one or two levels and can't be empty. (Examples: ´regexp´, ´fmt´, ´net/http´, ´crypto/md5´)
 `
 )
 
 func welcome() {
 	c.Print(sayHi)
-	c.Println("@{b!}", logo)
+	c.Println("@{!b}", logo)
 }
 
 func help() {

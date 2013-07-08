@@ -7,25 +7,27 @@ import (
 )
 
 func createFileFromTemplate(userFullName, projName, templ, dest string, info Project) {
-	t, _ := template.ParseFiles(templ)
-	f, _ := os.Create(filepath.Join(SRCPATH, userFullName, projName, dest))
-	t.Execute(f, info)
-	fileCreated(filepath.Join(userFullName, projName, dest))
+	filename := filepath.Join(SRCPATH, userFullName, projName, dest)
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		t, _ := template.ParseFiles(templ)
+		f, _ := os.Create(filename)
+		t.Execute(f, info)
+		fileCreated(filepath.Join(userFullName, projName, dest))
+	}
 }
 
 func cl(user UserConfig, projName string) {
+	firstName, secondName := validateProjName(projName)
 	userFullName := user.FullName()
 	buildDir := filepath.Join(SRCPATH, userFullName, projName)
+	checkProjExists(buildDir)
+	os.MkdirAll(buildDir, 0744)
+
 	info := Project{projName, userFullName, "cl"}
 
-	if err := os.Mkdir(buildDir, 0744); err != nil {
-		commandLineError(directoryExists)
-	}
-
-	createFileFromTemplate(userFullName, projName, "templates/cl/clproj.go", projName+".go", info)
-	createFileFromTemplate(userFullName, projName, "templates/cl/README.md", "README.md", info)
-	createFileFromTemplate(userFullName, projName, "templates/LICENSE", "LICENSE", info)
-	createFileFromTemplate(userFullName, projName, "templates/VERSION", "VERSION", info)
-
+	createFileFromTemplate(userFullName, projName, "templates/cl/clproj.go", secondName+".go", info)
+	createFileFromTemplate(userFullName, firstName, "templates/cl/README.md", "README.md", info)
+	createFileFromTemplate(userFullName, firstName, "templates/LICENSE", "LICENSE", info)
+	createFileFromTemplate(userFullName, firstName, "templates/VERSION", "VERSION", info)
 	creationReady()
 }
