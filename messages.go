@@ -22,8 +22,10 @@ var (
 	// Help command
 	helpCmd = `@bLooks like you need some help:
   @c- @{!y}gobi whoami@w: Tells you who you are, so where are the projects going to be created.
-  @c- @{!y}gobi cl <APPNAME>@w: Creates a simple command line app ready to use.
-      @{!y}<APPNAME> @|can have one or two levels and can't be empty. (Examples: ´regexp´, ´fmt´, ´net/http´, ´crypto/md5´)
+  @c- @{!y}gobi cl <APPNAME>@{!c}*@w: Creates a simple command line app ready to use.
+  @c- @{!y}gobi pkg <APPNAME>@{!c}*@w: Creates a Go package with a simple test suite.
+
+  @{!c}* @{!y}<APPNAME> @|can have one or two levels and can't be empty. (Examples: ´regexp´, ´fmt´, ´net/http´, ´crypto/md5´)
 `
 )
 
