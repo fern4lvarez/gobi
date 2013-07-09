@@ -24,7 +24,8 @@ func main() {
 				commandLineError(noProjectName)
 			}
 			name := os.Args[2]
-			cl(user, name)
+			proj := NewProject(name, user.FullName(), "cl")
+			proj.Create()
 		default:
 			commandLineError(wrongArgument)
 		}
