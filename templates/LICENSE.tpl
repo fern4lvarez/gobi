@@ -1,1 +1,1 @@
-ADD HERE SOME LICENSE
+{{.License}}

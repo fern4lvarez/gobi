@@ -11,30 +11,35 @@ type Project struct {
 	Name       string
 	FirstName  string
 	SecondName string
-	User       string
+	UId        string
+	UName      string
+	UEmail     string
+	Host       string
+	License    string
 	Typ        string
 }
 
-func NewProject(name, user, typ string) *Project {
+func NewProject(name, typ string, user UserConfig) *Project {
 	firstName, secondName := ValidateName(name)
-	return &Project{name, firstName, secondName, user, typ}
+	return &Project{name, firstName, secondName, user.Id, user.Name, user.Email, user.Host, user.License, typ}
 }
 
 func (proj Project) Create() {
-	buildDir := filepath.Join(SRCPATH, proj.User, proj.Name)
+	buildDir := filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name)
 	if proj.Exists() {
 		commandLineError(projectExists)
 	}
 	os.MkdirAll(buildDir, 0744)
-	createFileFromTemplate(proj.User, proj.Name, "templates/"+proj.Typ+"/proj.go.tpl", proj.SecondName+".go", proj)
-	createFileFromTemplate(proj.User, proj.FirstName, "templates/"+proj.Typ+"/README.md.tpl", "README.md", proj)
-	createFileFromTemplate(proj.User, proj.FirstName, "templates/LICENSE.tpl", "LICENSE", proj)
-	createFileFromTemplate(proj.User, proj.FirstName, "templates/VERSION.tpl", "VERSION", proj)
+	createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj.go.tpl", proj.SecondName+".go", proj)
+	createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/README.md.tpl", "README.md", proj)
+	createFileFromTemplate(proj.FirstName, "templates/LICENSE.tpl", "LICENSE", proj)
+	createFileFromTemplate(proj.FirstName, "templates/VERSION.tpl", "VERSION", proj)
+	createFileFromTemplate(proj.FirstName, "templates/AUTHORS.tpl", "AUTHORS", proj)
 	creationReady()
 }
 
 func (proj Project) Exists() bool {
-	if _, err := os.Stat(filepath.Join(SRCPATH, proj.User, proj.Name)); err == nil {
+	if _, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name)); err == nil {
 		return true
 	} else {
 		return false
@@ -75,13 +80,13 @@ func ValidateName(projName string) (firstName string, secondName string) {
 	return
 }
 
-func createFileFromTemplate(userFullName, projName, templ, dest string, info Project) {
-	filename := filepath.Join(SRCPATH, userFullName, projName, dest)
-	tempfile := filepath.Join(SRCPATH, userFullName, "gobi", templ)
+func createFileFromTemplate(projName, temp, dest string, proj Project) {
+	filename := filepath.Join(SRCPATH, proj.Host, proj.UId, projName, dest)
+	tempfile := filepath.Join(GOBIPATH, temp)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		t, _ := template.ParseFiles(tempfile)
 		f, _ := os.Create(filename)
-		t.Execute(f, info)
-		fileCreated(filepath.Join(userFullName, projName, dest))
+		t.Execute(f, proj)
+		fileCreated(filepath.Join(proj.Host, proj.UId, projName, dest))
 	}
 }

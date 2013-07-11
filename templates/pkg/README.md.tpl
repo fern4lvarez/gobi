@@ -1,5 +1,5 @@
 # {{.FirstName}}
-[Documentation online](http://godoc.org/{{.User}}/{{.FirstName}})
+[Documentation online](http://godoc.org/{{.Host}}/{{.UId}}/{{.FirstName}})
 
 **{{.FirstName}}** is a package written in Go generated automatically by ´gobi´. Happy hacking! 
 
@@ -8,7 +8,7 @@
 * Step 1: Get the `{{.SecondName}}` package
 
 ```
-go get {{.User}}/{{.Name}}
+go get {{.Host}}/{{.UId}}/{{.Name}}
 ```
 
 * Step 2 (Optional): Run tests
@@ -19,14 +19,12 @@ $ go test -v ./...
 
 ##Usage
 
-### API
-
 ```
 package main
 
 import (
   "fmt"
-  "{{.User}}/{{.Name}}"
+  "{{..Host}}/{{.UId}}/{{.Name}}"
 )
 
 func main() {
@@ -35,4 +33,4 @@ func main() {
 ```
 
 ##License
-{{.FirstName}} is MIT licensed, see [here](https://{{.User}}/{{.FirstName}}/blob/master/LICENSE)
+{{.FirstName}} is {{.License}} licensed.

@@ -13,10 +13,9 @@ func main() {
 		commandLineError(wrongNumberOfArguments)
 	} else {
 		user = checkConfig()
-
 		switch first := os.Args[1]; first {
 		case "whoami":
-			whoAreYou(user)
+			user.WhoAreYou()
 		case "help":
 			help()
 		case "cl":
@@ -24,14 +23,14 @@ func main() {
 				commandLineError(noProjectName)
 			}
 			name := os.Args[2]
-			proj := NewProject(name, user.FullName(), "cl")
+			proj := NewProject(name, "cl", user)
 			proj.Create()
 		case "pkg":
 			if l < 3 {
 				commandLineError(noProjectName)
 			}
 			name := os.Args[2]
-			proj := NewProject(name, user.FullName(), "pkg")
+			proj := NewProject(name, "pkg", user)
 			proj.Create()
 
 		default:
