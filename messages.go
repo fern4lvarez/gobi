@@ -5,6 +5,17 @@ import (
 	"os"
 )
 
+const logo = `
+              _     _ 
+             | |   (_)
+   __ _  ___ | |__  _ 
+  / _' |/ _ \| '_ \| |
+ | (_| | (_) | |_) | |
+  \__, |\___/|_.__/|_|
+   __/ |              
+  |___/  
+`
+
 var (
 	// Command line errors
 	wrongNumberOfArguments = "@{!r}Wrong number of arguments, try again."
@@ -42,10 +53,6 @@ func help() {
 func commandLineError(msg string) {
 	c.Println(msg, seeHelp)
 	os.Exit(1)
-}
-
-func whoAreYou(user UserConfig) {
-	c.Printf("@bYou are @{!g}%s@b.\n", user.FullName())
 }
 
 func fileCreated(file string) {

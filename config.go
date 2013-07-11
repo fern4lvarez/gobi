@@ -11,17 +11,6 @@ import (
 	"regexp"
 )
 
-const logo = `
-              _     _ 
-             | |   (_)
-   __ _  ___ | |__  _ 
-  / _' |/ _ \| '_ \| |
- | (_| | (_) | |_) | |
-  \__, |\___/|_.__/|_|
-   __/ |              
-  |___/  
-`
-
 var (
 	GOPATH      = os.Getenv("GOPATH")
 	SRCPATH     = filepath.Join(GOPATH, "src")
