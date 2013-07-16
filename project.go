@@ -39,11 +39,8 @@ func (proj Project) Create() {
 }
 
 func (proj Project) Exists() bool {
-	if _, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name)); err == nil {
-		return true
-	} else {
-		return false
-	}
+	_, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name))
+	return err == nil
 }
 
 func ParseName(projName string) []string {
