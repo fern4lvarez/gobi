@@ -32,7 +32,9 @@ func (proj Project) Create() {
 	os.MkdirAll(buildDir, 0744)
 	createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj.go.tpl", proj.SecondName+".go", proj)
 	if proj.Typ == "pkg" {
+		os.MkdirAll(filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName, "examples"), 0744)
 		createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj_test.go.tpl", proj.SecondName+"_test.go", proj)
+		createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/example.go.tpl", "examples/"+proj.SecondName+"_example.go", proj)
 	}
 	createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/README.md.tpl", "README.md", proj)
 	createFileFromTemplate(proj.FirstName, "templates/license/"+proj.License+".tpl", "LICENSE", proj)

@@ -50,7 +50,11 @@ func ExampleNew() {
 	ex, err := New(id, name)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
+		return
 	}
+
+	ex.SetId(ex.Id() + 1)
+  ex.SetName(ex.Name() + " is great")
 	fmt.Println(ex.Id(), ex.Name())
-	// Output: 1 gobi
+	// Output: 2 gobi is great
 }
