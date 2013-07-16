@@ -26,7 +26,7 @@ func NewProject(name, typ string, user UserConfig) *Project {
 
 func (proj Project) Create() {
 	var buildDir, buildDirFirst string
-	if proj.Host == "code.google.com" {
+	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, "p", proj.FirstName)
 	} else {
@@ -91,7 +91,7 @@ func ValidateName(projName string) (firstName string, secondName string) {
 
 func createFileFromTemplate(projName, temp, dest string, proj Project) {
 	var filename, tempfile string
-	if proj.Host == "code.google.com" {
+	if proj.Host == GOOGLE {
 		filename = filepath.Join(SRCPATH, proj.Host, "p", projName, dest)
 	} else {
 		filename = filepath.Join(SRCPATH, proj.Host, proj.UserId, projName, dest)
