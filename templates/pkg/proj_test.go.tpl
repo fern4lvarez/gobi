@@ -1,6 +1,7 @@
 package {{.SecondName}}
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -41,4 +42,15 @@ func TestSetName(t *testing.T) {
 	if name := ex.Name(); name != "bar" {
 		t.Errorf(msgFail, "SetName", "bar", name)
 	}
+}
+
+func ExampleNew() {
+	id := 1
+	name := "gobi"
+	ex, err := New(id, name)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+	fmt.Println(ex.Id(), ex.Name())
+	// Output: 1 gobi
 }
