@@ -1,5 +1,5 @@
 # {{.FirstName}}
-[Documentation online](http://godoc.org/{{.Host}}/{{.UId}}/{{.FirstName}})
+[Documentation online](http://godoc.org/{{.Host}}/{{.UserId}}/{{.FirstName}})
 
 **{{.FirstName}}** is a package written in Go generated automatically by ´gobi´. Happy hacking! 
 
@@ -8,7 +8,7 @@
 * Step 1: Get the `{{.SecondName}}` package
 
 ```
-go get {{.Host}}/{{.UId}}/{{.Name}}
+go get {{.Host}}/{{.UserId}}/{{.Name}}
 ```
 
 * Step 2 (Optional): Run tests
@@ -24,7 +24,7 @@ package main
 
 import (
   "fmt"
-  "{{..Host}}/{{.UId}}/{{.Name}}"
+  "{{.Host}}/{{.UserId}}/{{.Name}}"
 )
 
 func main() {

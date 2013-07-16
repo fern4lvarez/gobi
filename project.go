@@ -11,9 +11,9 @@ type Project struct {
 	Name       string
 	FirstName  string
 	SecondName string
-	UId        string
-	UName      string
-	UEmail     string
+	UserId     string
+	UserName   string
+	UserEmail  string
 	Host       string
 	License    string
 	Typ        string
@@ -25,21 +25,24 @@ func NewProject(name, typ string, user UserConfig) *Project {
 }
 
 func (proj Project) Create() {
-	buildDir := filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name)
+	buildDir := filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
 	if proj.Exists() {
 		commandLineError(projectExists)
 	}
 	os.MkdirAll(buildDir, 0744)
 	createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj.go.tpl", proj.SecondName+".go", proj)
+	if proj.Typ == "pkg" {
+		createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj_test.go.tpl", proj.SecondName+"_test.go", proj)
+	}
 	createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/README.md.tpl", "README.md", proj)
-	createFileFromTemplate(proj.FirstName, "templates/LICENSE.tpl", "LICENSE", proj)
+	createFileFromTemplate(proj.FirstName, "templates/license/"+proj.License+".tpl", "LICENSE", proj)
 	createFileFromTemplate(proj.FirstName, "templates/VERSION.tpl", "VERSION", proj)
 	createFileFromTemplate(proj.FirstName, "templates/AUTHORS.tpl", "AUTHORS", proj)
 	creationReady()
 }
 
 func (proj Project) Exists() bool {
-	_, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UId, proj.Name))
+	_, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name))
 	return err == nil
 }
 
@@ -78,12 +81,12 @@ func ValidateName(projName string) (firstName string, secondName string) {
 }
 
 func createFileFromTemplate(projName, temp, dest string, proj Project) {
-	filename := filepath.Join(SRCPATH, proj.Host, proj.UId, projName, dest)
+	filename := filepath.Join(SRCPATH, proj.Host, proj.UserId, projName, dest)
 	tempfile := filepath.Join(GOBIPATH, temp)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		t, _ := template.ParseFiles(tempfile)
 		f, _ := os.Create(filename)
 		t.Execute(f, proj)
-		fileCreated(filepath.Join(proj.Host, proj.UId, projName, dest))
+		fileCreated(filepath.Join(proj.Host, proj.UserId, projName, dest))
 	}
 }

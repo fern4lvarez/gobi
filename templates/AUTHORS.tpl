@@ -1,1 +1,1 @@
-[{{.UName}}](http://{{.Host}}/{{.UId}}) <{{.UEmail}}>
+[{{.UserName}}](http://{{.Host}}/{{.UserId}}) <{{.UserEmail}}>
