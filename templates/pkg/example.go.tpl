@@ -3,7 +3,7 @@ package main
 import (
   "fmt"
   "os"
-  "{{.Host}}/{{.UserId}}/{{.Name}}"
+  "{{.GoGetName}}"
 )
 
 func main() {

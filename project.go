@@ -11,6 +11,7 @@ type Project struct {
 	Name       string
 	FirstName  string
 	SecondName string
+	GoGetName  string
 	UserId     string
 	UserName   string
 	UserEmail  string
@@ -21,10 +22,23 @@ type Project struct {
 
 func NewProject(name, typ string, user UserConfig) *Project {
 	firstName, secondName := ValidateName(name)
-	return &Project{name, firstName, secondName, user.Id, user.Name, user.Email, user.Host, user.License, typ}
+	goGetName := GoGetName(user.Host, user.Id, name)
+	return &Project{name, firstName, secondName, goGetName, user.Id, user.Name, user.Email, user.Host, user.License, typ}
 }
 
 func (proj Project) Create() {
+	if proj.Exists() {
+		commandLineError(projectExists)
+	}
+	switch typ := proj.Typ; typ {
+	case "cl":
+		proj.Cl()
+	case "pkg":
+		proj.Pkg()
+	}
+}
+
+func (proj Project) Cl() {
 	var buildDir, buildDirFirst string
 	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
@@ -33,26 +47,64 @@ func (proj Project) Create() {
 		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
 	}
-	if proj.Exists() {
-		commandLineError(projectExists)
+	os.MkdirAll(buildDir, 0744)
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
+		filepath.Join(proj.Typ, "README.md.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
+		filepath.Join(proj.Typ, "proj.go.tpl"))
+}
+
+func (proj Project) Pkg() {
+	var buildDir, buildDirFirst string
+	if proj.Host == GOOGLE {
+		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
+		buildDirFirst = filepath.Join(SRCPATH, proj.Host, "p", proj.FirstName)
+	} else {
+		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
+		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
 	}
 	os.MkdirAll(buildDir, 0744)
-	createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj.go.tpl", proj.SecondName+".go", proj)
-	if proj.Typ == "pkg" {
-		os.MkdirAll(filepath.Join(buildDirFirst, "examples"), 0744)
-		createFileFromTemplate(proj.Name, "templates/"+proj.Typ+"/proj_test.go.tpl", proj.SecondName+"_test.go", proj)
-		createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/example.go.tpl", "examples/"+proj.SecondName+"_example.go", proj)
-	}
-	createFileFromTemplate(proj.FirstName, "templates/"+proj.Typ+"/README.md.tpl", "README.md", proj)
-	createFileFromTemplate(proj.FirstName, "templates/license/"+proj.License+".tpl", "LICENSE", proj)
-	createFileFromTemplate(proj.FirstName, "templates/VERSION.tpl", "VERSION", proj)
-	createFileFromTemplate(proj.FirstName, "templates/AUTHORS.tpl", "AUTHORS", proj)
-	creationReady()
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
+		filepath.Join(proj.Typ, "README.md.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
+		filepath.Join(proj.Typ, "proj.go.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+"_test.go"),
+		filepath.Join(proj.Typ, "proj_test.go.tpl"))
+	os.MkdirAll(filepath.Join(buildDirFirst, "examples"), 0744)
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "examples", proj.SecondName+"_example.go"),
+		filepath.Join(proj.Typ, "example.go.tpl"))
 }
 
 func (proj Project) Exists() bool {
-	_, err := os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name))
+	var err error
+	if proj.Host == GOOGLE {
+		_, err = os.Stat(filepath.Join(SRCPATH, proj.Host, "p", proj.Name))
+	} else {
+		_, err = os.Stat(filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name))
+	}
 	return err == nil
+}
+
+func (proj Project) CreateFileFromTemplate(file, temp string) {
+	tempfile := filepath.Join(GOBIPATH, "templates", temp)
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		t, _ := template.ParseFiles(tempfile)
+		f, _ := os.Create(file)
+		t.Execute(f, proj)
+		fileCreated(file)
+	}
+}
+
+func GoGetName(host, userid, name string) string {
+	if host == GOOGLE {
+		return filepath.Join(host, "p", name)
+	} else {
+		return filepath.Join(host, userid, name)
+	}
 }
 
 func ParseName(projName string) []string {
@@ -87,20 +139,4 @@ func ValidateName(projName string) (firstName string, secondName string) {
 		secondName = partsProjName[1]
 	}
 	return
-}
-
-func createFileFromTemplate(projName, temp, dest string, proj Project) {
-	var filename, tempfile string
-	if proj.Host == GOOGLE {
-		filename = filepath.Join(SRCPATH, proj.Host, "p", projName, dest)
-	} else {
-		filename = filepath.Join(SRCPATH, proj.Host, proj.UserId, projName, dest)
-	}
-	tempfile = filepath.Join(GOBIPATH, temp)
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		t, _ := template.ParseFiles(tempfile)
-		f, _ := os.Create(filename)
-		t.Execute(f, proj)
-		fileCreated(filename)
-	}
 }
