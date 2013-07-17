@@ -33,8 +33,9 @@ var (
 	// Help command
 	helpCmd = `@bLooks like you need some help:
   @c- @{!y}gobi whoami@w: Tells you who you are, so where are the projects going to be created.
-  @c- @{!y}gobi cl <APPNAME>@{!c}*@w: Creates a simple command line app ready to use.
+  @c- @{!y}gobi cl <APPNAME>@{!c}*@w: Creates a command line app ready to use.
   @c- @{!y}gobi pkg <APPNAME>@{!c}*@w: Creates a Go package with a simple test suite.
+  @c- @{!y}gobi web <APPNAME>@{!c}*@w: Creates a web application ready to deploy.
 
   @{!c}* @{!y}<APPNAME> @|can have one or two levels and can't be empty. (Examples: ´regexp´, ´fmt´, ´net/http´, ´crypto/md5´)
 `
@@ -57,6 +58,10 @@ func commandLineError(msg string) {
 
 func fileCreated(file string) {
 	c.Println("@g Create", file, "...")
+}
+
+func assetsCreated(file string) {
+	c.Println("@g Create assets on", file, "...")
 }
 
 func creationReady() {

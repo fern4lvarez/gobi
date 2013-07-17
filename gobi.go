@@ -32,6 +32,13 @@ func main() {
 			name := os.Args[2]
 			proj := NewProject(name, "pkg", user)
 			proj.Create()
+		case "web":
+			if l < 3 {
+				commandLineError(noProjectName)
+			}
+			name := os.Args[2]
+			proj := NewProject(name, "web", user)
+			proj.Create()
 
 		default:
 			commandLineError(wrongArgument)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	cp "github.com/opesun/copyrecur"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -35,6 +36,8 @@ func (proj Project) Create() {
 		proj.Cl()
 	case "pkg":
 		proj.Pkg()
+	case "web":
+		proj.Web()
 	}
 }
 
@@ -77,6 +80,33 @@ func (proj Project) Pkg() {
 	os.MkdirAll(filepath.Join(buildDirFirst, "examples"), 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "examples", proj.SecondName+"_example.go"),
 		filepath.Join(proj.Typ, "example.go.tpl"))
+}
+
+func (proj Project) Web() {
+	var buildDir, buildDirFirst, staticDir string
+	if proj.Host == GOOGLE {
+		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
+		buildDirFirst = filepath.Join(SRCPATH, proj.Host, "p", proj.FirstName)
+	} else {
+		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
+		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
+	}
+	staticDir = filepath.Join(buildDir, "static")
+	os.MkdirAll(staticDir, 0744)
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	CopyAssets(filepath.Join(GOBIPATH, "templates", "web"), staticDir)
+	// proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
+	// 	filepath.Join(proj.Typ, "README.md.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
+		filepath.Join(proj.Typ, "proj.go.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, ".godir"),
+		filepath.Join(proj.Typ, "godir.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, "Procfile"),
+		filepath.Join(proj.Typ, "Procfile.tpl"))
+	os.MkdirAll(filepath.Join(buildDirFirst, "templates"), 0744)
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, "templates", "index.html"),
+		filepath.Join(proj.Typ, "index.html.tpl"))
 }
 
 func (proj Project) Exists() bool {
@@ -139,4 +169,14 @@ func ValidateName(projName string) (firstName string, secondName string) {
 		secondName = partsProjName[1]
 	}
 	return
+}
+
+func CopyAssets(src, dest string) {
+	cp.CopyDir(filepath.Join(src, "css"),
+		filepath.Join(dest, "css"))
+	cp.CopyDir(filepath.Join(src, "js"),
+		filepath.Join(dest, "js"))
+	cp.CopyDir(filepath.Join(src, "img"),
+		filepath.Join(dest, "img"))
+	assetsCreated(dest)
 }
