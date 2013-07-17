@@ -25,11 +25,11 @@ var (
 )
 
 type UserConfig struct {
-	Name    string
-	Id      string
-	Host    string
-	Email   string
-	License string
+	Name    string `json:"name"`
+	Id      string `json:"id"`
+	Host    string `json:"host"`
+	Email   string `json:"email"`
+	License string `json:"license"`
 }
 
 func NewConfig() *UserConfig {
