@@ -1,5 +1,5 @@
 # {{.FirstName}}
-=====
+
 [Documentation online](http://godoc.org/{{.GoGetName}})
 
 **{{.SecondName}}** is a command line tool created by `gobi`. Happy hacking!
@@ -16,7 +16,7 @@ go get {{.GoGetName}}
 * Step 2 (Optional): Run tests
 
 ```
-$ go test -v .
+$ go test -v ./...
 ```
 
 ##Usage

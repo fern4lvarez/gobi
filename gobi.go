@@ -16,30 +16,17 @@ func main() {
 		switch first := os.Args[1]; first {
 		case "whoami":
 			user.WhoAreYou()
+		case "v", "version":
+			showVersion()
 		case "help":
 			help()
-		case "cl":
+		case "cl", "pkg", "web":
 			if l < 3 {
 				commandLineError(noProjectName)
 			}
 			name := os.Args[2]
-			proj := NewProject(name, "cl", user)
+			proj := NewProject(name, first, user)
 			proj.Create()
-		case "pkg":
-			if l < 3 {
-				commandLineError(noProjectName)
-			}
-			name := os.Args[2]
-			proj := NewProject(name, "pkg", user)
-			proj.Create()
-		case "web":
-			if l < 3 {
-				commandLineError(noProjectName)
-			}
-			name := os.Args[2]
-			proj := NewProject(name, "web", user)
-			proj.Create()
-
 		default:
 			commandLineError(wrongArgument)
 		}

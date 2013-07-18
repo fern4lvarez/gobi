@@ -20,7 +20,7 @@
             <script src="http://code.jquery.com/jquery.js"></script>
             <script src="static/js/bootstrap.js"></script>
                 <footer>
-                    {{.FirstName}}'s site generated automatically by gobi.
+                    {{.FirstName}}'s site generated automatically by <a href="https://www.github.com/fern4lvarez/gobi" target="_blank">gobi</a>.
                 </footer>
         </body>
     </html>

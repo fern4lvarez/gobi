@@ -1,5 +1,5 @@
 # {{.FirstName}}
-=====
+
 [Documentation online](http://godoc.org/{{.GoGetName}})
 
 **{{.FirstName}}** is a package written in Go generated automatically by `gobi`. Happy hacking!
@@ -16,7 +16,7 @@ go get {{.GoGetName}}
 * Step 2 (Optional): Run tests
 
 ```
-$ go test -v .
+$ go test -v ./...
 ```
 
 ##Usage

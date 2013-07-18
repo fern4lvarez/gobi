@@ -32,6 +32,7 @@ var (
 
 	// Help command
 	helpCmd = `@bLooks like you need some help:
+  @c- @{!y}gobi version@w: Shows current version.
   @c- @{!y}gobi whoami@w: Tells you who you are, so where are the projects going to be created.
   @c- @{!y}gobi cl <APPNAME>@{!c}*@w: Creates a command line app ready to use.
   @c- @{!y}gobi pkg <APPNAME>@{!c}*@w: Creates a Go package with a simple test suite.
@@ -70,4 +71,8 @@ func assetsCreated(file string) {
 
 func creationReady() {
 	c.Println("@{!g} Done!")
+}
+
+func showVersion() {
+	c.Println("@bVersion@{!b}", Version())
 }

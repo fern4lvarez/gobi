@@ -54,6 +54,7 @@ func (proj Project) Cl() {
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".gitignore"), "gitignore.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
 		filepath.Join("license", proj.License+".tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
@@ -74,6 +75,7 @@ func (proj Project) Pkg() {
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".gitignore"), "gitignore.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
 		filepath.Join("license", proj.License+".tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
@@ -100,6 +102,7 @@ func (proj Project) Web() {
 	os.MkdirAll(staticDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".gitignore"), "gitignore.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
 		filepath.Join("license", proj.License+".tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
