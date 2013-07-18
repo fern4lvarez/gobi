@@ -39,6 +39,7 @@ func (proj Project) Create() {
 	case "web":
 		proj.Web()
 	}
+	creationReady()
 }
 
 func (proj Project) Cl() {
@@ -53,6 +54,8 @@ func (proj Project) Cl() {
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
+		filepath.Join("license", proj.License+".tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
 		filepath.Join(proj.Typ, "README.md.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
@@ -71,6 +74,8 @@ func (proj Project) Pkg() {
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
+		filepath.Join("license", proj.License+".tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
 		filepath.Join(proj.Typ, "README.md.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
@@ -95,18 +100,19 @@ func (proj Project) Web() {
 	os.MkdirAll(staticDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
-	CopyAssets(filepath.Join(GOBIPATH, "templates", "web"), staticDir)
-	// proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
-	// 	filepath.Join(proj.Typ, "README.md.tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "LICENSE"),
+		filepath.Join("license", proj.License+".tpl"))
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "README.md"),
+		filepath.Join(proj.Typ, "README.md.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
 		filepath.Join(proj.Typ, "proj.go.tpl"))
-	proj.CreateFileFromTemplate(filepath.Join(buildDir, ".godir"),
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".godir"),
 		filepath.Join(proj.Typ, "godir.tpl"))
-	proj.CreateFileFromTemplate(filepath.Join(buildDir, "Procfile"),
+	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "Procfile"),
 		filepath.Join(proj.Typ, "Procfile.tpl"))
-	os.MkdirAll(filepath.Join(buildDirFirst, "templates"), 0744)
-	proj.CreateFileFromTemplate(filepath.Join(buildDir, "templates", "index.html"),
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, "index.html"),
 		filepath.Join(proj.Typ, "index.html.tpl"))
+	CopyAssets(filepath.Join(GOBIPATH, "templates", "web"), staticDir)
 }
 
 func (proj Project) Exists() bool {
@@ -126,6 +132,8 @@ func (proj Project) CreateFileFromTemplate(file, temp string) {
 		f, _ := os.Create(file)
 		t.Execute(f, proj)
 		fileCreated(file)
+	} else {
+		fileExists(file)
 	}
 }
 

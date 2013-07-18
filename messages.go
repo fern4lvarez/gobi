@@ -60,6 +60,10 @@ func fileCreated(file string) {
 	c.Println("@g Create", file, "...")
 }
 
+func fileExists(file string) {
+	c.Println("@y File", file, "already exists. Skipping.")
+}
+
 func assetsCreated(file string) {
 	c.Println("@g Create assets on", file, "...")
 }

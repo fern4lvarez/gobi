@@ -1,31 +1,33 @@
 # {{.FirstName}}
-[Documentation online](http://godoc.org/{{.Host}}/{{.UserId}}/{{.FirstName}})
+=====
+[Documentation online](http://godoc.org/{{.GoGetName}})
 
-**{{.FirstName}}** is a package written in Go generated automatically by ´gobi´. Happy hacking!
+**{{.FirstName}}** is a package written in Go generated automatically by `gobi`. Happy hacking!
 
 ## Install (with GOPATH set on your machine)
+----------
 
 * Step 1: Get the `{{.SecondName}}` package
 
 ```
-go get {{.Host}}/{{.UserId}}/{{.Name}}
+go get {{.GoGetName}}
 ```
 
 * Step 2 (Optional): Run tests
 
 ```
-$ go test -v ./...
+$ go test -v .
 ```
 
 ##Usage
-
+----------
 ```
 package main
 
 import (
   "fmt"
   "os"
-  "{{.Host}}/{{.UserId}}/{{.Name}}"
+  "{{.GoGetName}}"
 )
 
 func main() {
@@ -44,4 +46,5 @@ func main() {
 ```
 
 ##License
+----------
 {{.FirstName}} is {{.License}} licensed.
