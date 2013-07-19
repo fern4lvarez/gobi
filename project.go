@@ -1,7 +1,6 @@
 package main
 
 import (
-	cp "github.com/opesun/copyrecur"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -107,7 +106,7 @@ func (proj Project) Pkg() {
 // Web creates a web application based on a Project
 func (proj Project) Web() {
 	// buildDir may vary change if GOOGLE is the host
-	var buildDir, buildDirFirst, staticDir string
+	var buildDir, buildDirFirst string
 	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, "p", proj.FirstName)
@@ -117,8 +116,7 @@ func (proj Project) Web() {
 	}
 	// Create build directory and necessary files
 	// For a web application deployment files and static assets are created
-	staticDir = filepath.Join(buildDir, "static")
-	os.MkdirAll(staticDir, 0744)
+	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".gitignore"), "gitignore.tpl")
@@ -134,7 +132,6 @@ func (proj Project) Web() {
 		filepath.Join(proj.Typ, "Procfile.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, "index.html"),
 		filepath.Join(proj.Typ, "index.html.tpl"))
-	CopyAssets(filepath.Join(GOBIPATH, "templates", "web"), staticDir)
 }
 
 // Exists returns true if the Project already exists
@@ -208,16 +205,4 @@ func ValidateName(projName string) (firstName string, secondName string) {
 		secondName = partsProjName[1]
 	}
 	return
-}
-
-// CopyAssets from a source to a destination
-// and prints a success message
-func CopyAssets(src, dest string) {
-	cp.CopyDir(filepath.Join(src, "css"),
-		filepath.Join(dest, "css"))
-	cp.CopyDir(filepath.Join(src, "js"),
-		filepath.Join(dest, "js"))
-	cp.CopyDir(filepath.Join(src, "img"),
-		filepath.Join(dest, "img"))
-	assetsCreated(dest)
 }

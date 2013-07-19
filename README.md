@@ -19,7 +19,7 @@ It might stand for *Go Boilerplater Injector*, but just think of it as a fun, ti
 
 * Create command line applications ready to use.
 * Create Go packages with a basic test suite and example included.
-* Create a web application with all Bootstrap assets and ready to deploy on most popular PaaS.
+* Create a web application with Bootstrap assets and ready to deploy on most popular PaaS.
 * Two-level projects.
 * Create your profile with your desired configuration.
 * LICENSE, README, VERSION, .gitignore and other files included out of the box.
@@ -90,8 +90,7 @@ In all cases `<APPNAME>` can have one or two levels and can't be empty. (Example
 
 
 ##TODO
-* Comment code for documentation
-* Tests (unit and functional tests)
+* Better Tests (unit and functional tests)
 * Travis CI
 * Manage configuration (restart config, update fields, etc.)
 * Manage projects (delete, date created, date last modified, etc.)
