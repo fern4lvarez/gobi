@@ -51,7 +51,7 @@ Name: // Your real name.
 Username: // Your user name.
 Host: // Host of your projects. Currently only github.com, bitbucket.org and code.google.com are supported.
 Email: // Your email address.
-License: The license applying to your projects. (Supporting AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain and no-license)
+License: The license applying to your projects. (Supporting AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, WTFPL and no-license)
 ```
 
 A file called `.gobi.json` will be created on your `$HOME` directory containing all your configuration. If you want to restart your configuration, you have to remove this file and execute `gobi` again. Dynamic management of the configuration is planned to be implemented.

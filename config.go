@@ -60,7 +60,7 @@ func NewConfig() *UserConfig {
 		"@{!b}Email: ")
 	license = promptField(validateLicense,
 		"@{!b}License: ",
-		"@{!y}Invalid license, try again. @yOptions: AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, no-license.",
+		"@{!y}Invalid license, try again. @yOptions: AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, WTFPL, no-license.",
 		"@{!b}License: ")
 
 	// User config creation
@@ -137,7 +137,7 @@ func validateEmail(email string) bool {
 func validateLicense(license string) bool {
 	licenses := []string{"AGPL", "Apache", "BSD", "BSD3-Clause", "Eclipse",
 		"GPLv2", "GPLv3", "LGPLv2.1", "LGPLv3",
-		"MIT", "Mozilla", "PublicDomain", "no-license"}
+		"MIT", "Mozilla", "PublicDomain", "WTFPL", "no-license"}
 	for i := range licenses {
 		if strings.EqualFold(license, licenses[i]) {
 			return true
