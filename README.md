@@ -91,13 +91,13 @@ In all cases `<APPNAME>` can have one or two levels and can't be empty. (Example
 
 ##TODO
 * Better Tests (unit and functional tests)
-* Travis CI
 * Manage configuration (restart config, update fields, etc.)
 * Manage projects (delete, date created, date last modified, etc.)
 * `go get` projects after created
 * Git management (init, add and commit to new project's repo)
 * Fallback (undo everything when creation process fails)
-* Automatic updates
+* Introduce CI on projects
+* Automatic update of gobi
 * Create files asynchronously using go routines
 * Lots of refactoring needed
 * Your suggestion [<HERE>](https://github.com/fern4lvarez/gobi/issues)
