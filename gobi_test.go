@@ -14,6 +14,17 @@ import (
 
 var exists = false
 
+func TestGobiWrongCommands(t *testing.T) {
+	setup()
+	defer teardown()
+	defer cleanupFiles(filepath.Join(SRCPATH, GITHUB, "testUserName"))
+	assertCommand(t, false, "gobi foo")
+	assertCommand(t, false, "gobi bersion")
+	assertCommand(t, false, "gobi cl web app")
+	assertCommand(t, false, "gobi pkg multiple vars")
+	assertCommand(t, false, "gobi web many vars not allowed")
+}
+
 func TestGobiHelp(t *testing.T) {
 	setup()
 	defer teardown()
