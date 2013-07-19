@@ -9,7 +9,7 @@
   |___/
 ```
 
-[![Build Status](https://travis-ci.org/fern4lvarez/gobi.png)](https://travis-ci.org/fern4lvarez/gobi) 
+[![Build Status](https://drone.io/github.com/fern4lvarez/gobi/status.png)](https://drone.io/github.com/fern4lvarez/gobi/latest) 
 [Documentation online](http://godoc.org/github.com/fern4lvarez/gobi)
 
 `gobi` is a command line tool that will make your Go development just faster. 
