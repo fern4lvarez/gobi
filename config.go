@@ -38,66 +38,33 @@ type UserConfig struct {
 // based on the answers
 // A JSON file is stored at $HOME/.gobi.json with this content
 func NewConfig() *UserConfig {
-	var name, username, host, email, license string
-	reader := bufio.NewReader(os.Stdin)
-
 	c.Println("@{!y}No configuration found! @bI'd like to know more about you.")
-	// Name
-	c.Print("@{!b}Name: ")
-	name, _ = reader.ReadString('\n')
-	name = strings.TrimSpace(name)
-	for !validateName(name) {
-		c.Println("@{!y}Please insert your name.")
-		c.Print("@{!b}Name: ")
-		name, _ = reader.ReadString('\n')
-		name = strings.TrimSpace(name)
-	}
-	// Username
-	c.Print("@{!b}Username: ")
-	username, _ = reader.ReadString('\n')
-	username = strings.TrimSpace(username)
-	for !validateUserName(username) {
-		reader = bufio.NewReader(os.Stdin)
-		c.Println("@{!y}Wrong username, try again.")
-		c.Print("@{!b}Username: ")
-		username, _ = reader.ReadString('\n')
-		username = strings.TrimSpace(username)
-	}
-	// Host
-	c.Print("@{!b}Host @b(github.com, bitbucket.org or code.google.com)@{!b}: ")
-	host, _ = reader.ReadString('\n')
-	host = strings.TrimSpace(host)
-	for !validateHost(strings.TrimSpace(host)) {
-		reader = bufio.NewReader(os.Stdin)
-		c.Println("@{!y}Invalid host, try again. @yOptions: github.com, bitbucket.org or code.google.com")
-		c.Print("@{!b}Host: ")
-		host, _ = reader.ReadString('\n')
-		host = strings.TrimSpace(host)
-	}
-	// Email
-	c.Print("@{!b}Email: ")
-	email, _ = reader.ReadString('\n')
-	email = strings.TrimSpace(email)
-	for !validateEmail(email) {
-		reader = bufio.NewReader(os.Stdin)
-		c.Println("@{!y}Invalid Email address, try again.")
-		c.Print("@{!b}Email: ")
-		email, _ = reader.ReadString('\n')
-		email = strings.TrimSpace(email)
-	}
-	// License
-	c.Print("@{!b}License: ")
-	license, _ = reader.ReadString('\n')
-	license = strings.TrimSpace(license)
-	for !validateLicense(license) {
-		reader = bufio.NewReader(os.Stdin)
-		c.Println("@{!y}Invalid license, try again. @yOptions: AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, no-license.")
-		c.Print("@{!b}License: ")
-		license, _ = reader.ReadString('\n')
-		license = strings.TrimSpace(license)
-	}
+
+	// Prompted user configuration form
+	var name, userName, host, email, license string
+	name = promptField(validateName,
+		"@{!b}Name: ",
+		"@{!y}Please insert your name.",
+		"@{!b}Name: ")
+	userName = promptField(validateUserName,
+		"@{!b}Username: ",
+		"@{!y}Wrong username, try again.",
+		"@{!b}Username: ")
+	host = promptField(validateHost,
+		"@{!b}Host @b(github.com, bitbucket.org or code.google.com)@{!b}: ",
+		"@{!y}Invalid host, try again. @yOptions: github.com, bitbucket.org or code.google.com",
+		"@{!b}Host: ")
+	email = promptField(validateEmail,
+		"@{!b}Email: ",
+		"@{!y}Invalid Email address, try again.",
+		"@{!b}Email: ")
+	license = promptField(validateLicense,
+		"@{!b}License: ",
+		"@{!y}Invalid license, try again. @yOptions: AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, no-license.",
+		"@{!b}License: ")
+
 	// User config creation
-	conf := &UserConfig{name, username, host, email, license}
+	conf := &UserConfig{name, userName, host, email, license}
 	b, _ := json.Marshal(conf)
 	ioutil.WriteFile(GOBI_CONFIG, []byte(b), 0744)
 	return conf
@@ -119,6 +86,21 @@ func checkConfig() UserConfig {
 		return user
 	}
 	return UserConfig{}
+}
+
+// promptField to validate and save input value
+func promptField(validateFunc func(string) bool, welcomeMsg, errorMsg, welcome2Msg string) (resp string) {
+	reader := bufio.NewReader(os.Stdin)
+	c.Print(welcomeMsg)
+	resp, _ = reader.ReadString('\n')
+	resp = strings.TrimSpace(resp)
+	for !validateFunc(resp) {
+		c.Println(errorMsg)
+		c.Print(welcome2Msg)
+		resp, _ = reader.ReadString('\n')
+		resp = strings.TrimSpace(resp)
+	}
+	return
 }
 
 // validateName: Cannot be empty
