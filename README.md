@@ -100,7 +100,7 @@ In all cases `<APPNAME>` can have one or two levels and can't be empty. (Example
 * Automatic update of gobi
 * Create files asynchronously using go routines
 * Lots of refactoring needed
-* Your suggestion [<HERE>](https://github.com/fern4lvarez/gobi/issues)
+* Your suggestion [HERE](https://github.com/fern4lvarez/gobi/issues)
 
 
 ##Contribute!
