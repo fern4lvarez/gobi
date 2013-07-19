@@ -20,7 +20,7 @@ It might stand for *Go Boilerplater Injector*, but just think of it as a fun, ti
 * Create command line applications ready to use.
 * Create Go packages with a basic test suite and example included.
 * Create a web application with Bootstrap assets and ready to deploy on most popular PaaS.
-* Two-level projects.
+* Two-level path projects.
 * Create your profile with your desired configuration.
 * LICENSE, README, VERSION, .gitignore and other files included out of the box.
 
@@ -54,7 +54,7 @@ Email: // Your email address.
 License: The license applying to your projects. (Supporting AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain and no-license)
 ```
 
-A file called `gobi.json` will be created on your `$HOME` directory containing all your configuration. If you want to restart your configuration, you have to remove this file and execute `gobi` again. Dynamic management of the configuration is planned to be implemented.
+A file called `.gobi.json` will be created on your `$HOME` directory containing all your configuration. If you want to restart your configuration, you have to remove this file and execute `gobi` again. Dynamic management of the configuration is planned to be implemented.
 
 If you need help:
 ```
