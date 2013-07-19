@@ -126,9 +126,9 @@ func (proj Project) Web() {
 		filepath.Join(proj.Typ, "README.md.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, proj.SecondName+".go"),
 		filepath.Join(proj.Typ, "proj.go.tpl"))
-	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, ".godir"),
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, ".godir"),
 		filepath.Join(proj.Typ, "godir.tpl"))
-	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "Procfile"),
+	proj.CreateFileFromTemplate(filepath.Join(buildDir, "Procfile"),
 		filepath.Join(proj.Typ, "Procfile.tpl"))
 	proj.CreateFileFromTemplate(filepath.Join(buildDir, "index.html"),
 		filepath.Join(proj.Typ, "index.html.tpl"))
