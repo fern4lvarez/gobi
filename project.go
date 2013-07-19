@@ -8,6 +8,8 @@ import (
 	"text/template"
 )
 
+// Project contains all the information
+// of an application created by gobi
 type Project struct {
 	Name       string
 	FirstName  string
@@ -21,28 +23,36 @@ type Project struct {
 	Typ        string
 }
 
+// NewProject creates the application from the name, type
+// and the user configuration
 func NewProject(name, typ string, user UserConfig) *Project {
 	firstName, secondName := ValidateName(name)
 	goGetName := GoGetName(user.Host, user.Id, name)
 	return &Project{name, firstName, secondName, goGetName, user.Id, user.Name, user.Email, user.Host, user.License, typ}
 }
 
+// Create the project distinguishing on the type
 func (proj Project) Create() {
 	if proj.Exists() {
 		commandLineError(projectExists)
 	}
 	switch typ := proj.Typ; typ {
+	// Command line app
 	case "cl":
 		proj.Cl()
+	// Go package
 	case "pkg":
 		proj.Pkg()
+	// Web application
 	case "web":
 		proj.Web()
 	}
 	creationReady()
 }
 
+// Cl creates the command line application based on a Project
 func (proj Project) Cl() {
+	// buildDir may vary change if GOOGLE is the host
 	var buildDir, buildDirFirst string
 	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
@@ -51,6 +61,7 @@ func (proj Project) Cl() {
 		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
 	}
+	// Create build directory and necessary files
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
@@ -63,7 +74,9 @@ func (proj Project) Cl() {
 		filepath.Join(proj.Typ, "proj.go.tpl"))
 }
 
+// Pkg creates a Go package based on a Project
 func (proj Project) Pkg() {
+	// buildDir may vary change if GOOGLE is the host
 	var buildDir, buildDirFirst string
 	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
@@ -72,6 +85,8 @@ func (proj Project) Pkg() {
 		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
 	}
+	// Create build directory and necessary files
+	// For a package a test and example are created
 	os.MkdirAll(buildDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "VERSION"), "VERSION.tpl")
@@ -89,7 +104,9 @@ func (proj Project) Pkg() {
 		filepath.Join(proj.Typ, "example.go.tpl"))
 }
 
+// Web creates a web application based on a Project
 func (proj Project) Web() {
+	// buildDir may vary change if GOOGLE is the host
 	var buildDir, buildDirFirst, staticDir string
 	if proj.Host == GOOGLE {
 		buildDir = filepath.Join(SRCPATH, proj.Host, "p", proj.Name)
@@ -98,6 +115,8 @@ func (proj Project) Web() {
 		buildDir = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.Name)
 		buildDirFirst = filepath.Join(SRCPATH, proj.Host, proj.UserId, proj.FirstName)
 	}
+	// Create build directory and necessary files
+	// For a web application deployment files and static assets are created
 	staticDir = filepath.Join(buildDir, "static")
 	os.MkdirAll(staticDir, 0744)
 	proj.CreateFileFromTemplate(filepath.Join(buildDirFirst, "AUTHORS"), "AUTHORS.tpl")
@@ -118,6 +137,7 @@ func (proj Project) Web() {
 	CopyAssets(filepath.Join(GOBIPATH, "templates", "web"), staticDir)
 }
 
+// Exists returns true if the Project already exists
 func (proj Project) Exists() bool {
 	var err error
 	if proj.Host == GOOGLE {
@@ -128,6 +148,7 @@ func (proj Project) Exists() bool {
 	return err == nil
 }
 
+// CreateFileFromTemplate if this file does not exist yet
 func (proj Project) CreateFileFromTemplate(file, temp string) {
 	tempfile := filepath.Join(GOBIPATH, "templates", temp)
 	if _, err := os.Stat(file); os.IsNotExist(err) {
@@ -140,6 +161,8 @@ func (proj Project) CreateFileFromTemplate(file, temp string) {
 	}
 }
 
+// GoGetName returns the right name to go get the Project
+// Projects with GOOGLE as host have a different pattern than GITHUB or BITBUCKET
 func GoGetName(host, userid, name string) string {
 	if host == GOOGLE {
 		return filepath.Join(host, "p", name)
@@ -148,6 +171,7 @@ func GoGetName(host, userid, name string) string {
 	}
 }
 
+// ParseName using character / is used as delimiter
 func ParseName(projName string) []string {
 	delimeter := "/"
 	if projName == "" {
@@ -165,6 +189,10 @@ func ParseName(projName string) []string {
 	return result
 }
 
+// ValidateName returns name of the Project already splited
+// If name is wrong the program is stopped
+// If name has one level, both names returned are the same
+// If name has two levels, two different names are returned
 func ValidateName(projName string) (firstName string, secondName string) {
 	partsProjName := ParseName(projName)
 	if l := len(partsProjName); l == 0 || l > 2 {
@@ -182,6 +210,8 @@ func ValidateName(projName string) (firstName string, secondName string) {
 	return
 }
 
+// CopyAssets from a source to a destination
+// and prints a success message
 func CopyAssets(src, dest string) {
 	cp.CopyDir(filepath.Join(src, "css"),
 		filepath.Join(dest, "css"))

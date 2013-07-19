@@ -1,3 +1,7 @@
+/*
+gobi is a command line tool that will make your Go development just faster.
+It might stand for *Go Boilerplater Injector*, but just think of it as a fun, tiny tool to create and manage quickly your applications written in Go.
+*/
 package main
 
 import (

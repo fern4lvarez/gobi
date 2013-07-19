@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-// Version of the package
+// Version of the application
 func Version() string {
 	b, _ := ioutil.ReadFile(filepath.Join(GOBIPATH, "VERSION"))
 	v := string(b)

@@ -18,8 +18,8 @@ It might stand for *Go Boilerplater Injector*, but just think of it as a fun, ti
 `gobi` is on current development, so it's planned to get more features as long as time passes by. As of version 0.1.x these are the main current features:
 
 * Create command line applications ready to use.
-* Create Go packages with a basic test suite included.
-* Create a web application ready to deploy on most popular PaaS.
+* Create Go packages with a basic test suite and example included.
+* Create a web application with all Bootstrap assets and ready to deploy on most popular PaaS.
 * Two-level projects.
 * Create your profile with your desired configuration.
 * LICENSE, README, VERSION, .gitignore and other files included out of the box.

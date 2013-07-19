@@ -13,6 +13,7 @@ import (
 	"strings"
 )
 
+// Global variables used in the whole application
 var (
 	GOPATH      = os.Getenv("GOPATH")
 	SRCPATH     = filepath.Join(GOPATH, "src")
@@ -24,6 +25,7 @@ var (
 	GOBIPATH    = filepath.Join(SRCPATH, GITHUB, "fern4lvarez", "gobi")
 )
 
+// UserConfig contains all information about the current user
 type UserConfig struct {
 	Name    string `json:"name"`
 	Id      string `json:"id"`
@@ -32,6 +34,9 @@ type UserConfig struct {
 	License string `json:"license"`
 }
 
+// NewConfig promps a form and returns a UserConfig object
+// based on the answers
+// A JSON file is stored at $HOME/.gobi.json with this content
 func NewConfig() *UserConfig {
 	var name, username, host, email, license string
 	reader := bufio.NewReader(os.Stdin)
@@ -98,15 +103,13 @@ func NewConfig() *UserConfig {
 	return conf
 }
 
-func (uc UserConfig) FullName() string {
-	return uc.Host + "/" + uc.Name
-}
-
+// WhoAreYou pretty prints the UserConfig
 func (uc UserConfig) WhoAreYou() {
 	c.Printf("@bYou are @{!g}%s @b(@{!g}%s@b)@b. Creating projects on @{!g}%s/%s @bunder @{!g}%s @blicense.\n",
 		uc.Name, uc.Email, uc.Host, uc.Id, uc.License)
 }
 
+// checkConfig if JSON config file exists and returns the UserConfig if so
 func checkConfig() UserConfig {
 	var user UserConfig
 	b, errRead := ioutil.ReadFile(GOBI_CONFIG)
@@ -118,14 +121,17 @@ func checkConfig() UserConfig {
 	return UserConfig{}
 }
 
+// validateName: Cannot be empty
 func validateName(name string) bool {
 	return name != ""
 }
 
+// validateUserName: Cannot be empty, only one path level
 func validateUserName(username string) bool {
 	return username != "" && !strings.Contains(username, "/") && !strings.Contains(username, " ")
 }
 
+// validateHost: Can only be GITHUB, BITBUCKET OR GOOGLE
 func validateHost(host string) bool {
 	hosts := []string{GITHUB, BITBUCKET, GOOGLE}
 	for i := range hosts {
@@ -136,6 +142,7 @@ func validateHost(host string) bool {
 	return false
 }
 
+// validateEmail: Must have a correct email format
 func validateEmail(email string) bool {
 	exp, err := regexp.Compile(validate.RE_BASIC_EMAIL)
 	if err != nil {
@@ -144,6 +151,7 @@ func validateEmail(email string) bool {
 	return exp.MatchString(email)
 }
 
+// validateLicense: Must be one of the supported licenses
 func validateLicense(license string) bool {
 	licenses := []string{"AGPL", "Apache", "BSD", "BSD3-Clause", "Eclipse",
 		"GPLv2", "GPLv3", "LGPLv2.1", "LGPLv3",
