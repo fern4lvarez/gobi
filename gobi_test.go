@@ -8,175 +8,82 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
-var (
-	msgFail = "%v method fails. Expects %v, returns %v"
-	exists  = false
-)
+var exists = false
 
 func TestGobiHelp(t *testing.T) {
 	setup()
 	defer teardown()
-	c.Println("@{!b} $ gobi help")
-	out, err := exec.Command("gobi", "help").Output()
-	if err != nil {
-		t.Errorf("%v", err)
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi help")
 }
 
 func TestGobiVersion(t *testing.T) {
 	setup()
 	defer teardown()
-	c.Println("@{!b} $ gobi version")
-	out, err := exec.Command("gobi", "version").Output()
-	if err != nil {
-		t.Errorf("%v", err)
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi version")
 }
 
 func TestGobiWhoami(t *testing.T) {
 	setup()
 	defer teardown()
-	c.Println("@{!b} $ gobi whoami")
-	out, err := exec.Command("gobi", "whoami").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi whoami")
 }
 
 func TestGobiCl(t *testing.T) {
 	setup()
 	defer teardown()
 	defer cleanupFiles(filepath.Join(SRCPATH, GITHUB, "testUserName"))
-	c.Println("@{!b} $ gobi cl clapp")
-	out, err := exec.Command("gobi", "cl", "clapp").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi cl clapp/app")
-	out, err = exec.Command("gobi", "cl", "clapp/app").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi cl clapp")
-	out, err = exec.Command("gobi", "cl", "clapp").Output()
-	if err == nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi cl clapp2/app")
-	out, err = exec.Command("gobi", "cl", "clapp2/app").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi cl clapp")
+	assertCommand(t, true, "gobi cl clapp/app")
+	assertCommand(t, false, "gobi cl clapp")
+	assertCommand(t, true, "gobi cl clapp2/app")
 }
 
 func TestGobiPkg(t *testing.T) {
 	setup()
 	defer teardown()
 	defer cleanupFiles(filepath.Join(SRCPATH, GITHUB, "testUserName"))
-	c.Println("@{!b} $ gobi pkg gopkg")
-	out, err := exec.Command("gobi", "pkg", "gopkg").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi pkg gopkg/pkg")
-	out, err = exec.Command("gobi", "pkg", "gopkg/pkg").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi pkg gopkg")
-	out, err = exec.Command("gobi", "pkg", "gopkg").Output()
-	if err == nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi pkg gopkg2/pkg")
-	out, err = exec.Command("gobi", "pkg", "gopkg2/pkg").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi pkg gopkg")
+	assertCommand(t, true, "gobi pkg gopkg/pkg")
+	assertCommand(t, false, "gobi pkg gopkg")
+	assertCommand(t, true, "gobi pkg gopkg2/pkg")
 }
 
 func TestGobiWeb(t *testing.T) {
 	setup()
 	defer teardown()
 	defer cleanupFiles(filepath.Join(SRCPATH, GITHUB, "testUserName"))
-	c.Println("@{!b} $ gobi web goweb")
-	out, err := exec.Command("gobi", "web", "goweb").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi web goweb/web")
-	out, err = exec.Command("gobi", "web", "goweb/web").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi web goweb")
-	out, err = exec.Command("gobi", "web", "goweb").Output()
-	if err == nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi web goweb2/web")
-	out, err = exec.Command("gobi", "web", "goweb2/web").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi web goweb")
+	assertCommand(t, true, "gobi web goweb/web")
+	assertCommand(t, false, "gobi web goweb")
+	assertCommand(t, true, "gobi web goweb2/web")
 }
 
 func TestGobiMix(t *testing.T) {
 	setup()
 	defer teardown()
 	defer cleanupFiles(filepath.Join(SRCPATH, GITHUB, "testUserName"))
-	c.Println("@{!b} $ gobi pkg gomix")
-	out, err := exec.Command("gobi", "pkg", "gomix").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
+	assertCommand(t, true, "gobi pkg gomix")
+	assertCommand(t, true, "gobi web gomix/site")
+	assertCommand(t, true, "gobi cl gomix/cli")
+	assertCommand(t, true, "gobi pkg gomix/mix")
+}
 
-	c.Println("@{!b} $ gobi web gomix/site")
-	out, err = exec.Command("gobi", "web", "gomix/site").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi cl gomix/cli")
-	out, err = exec.Command("gobi", "cl", "gomix/cli").Output()
-	if err != nil {
-		t.Error()
-	}
-	fmt.Println(string(out))
-
-	c.Println("@{!b} $ gobi pkg gomix/mix")
-	out, err = exec.Command("gobi", "pkg", "gomix/mix").Output()
-	if err != nil {
-		t.Error()
+func assertCommand(t *testing.T, b bool, cmd string) {
+	c.Println("@{!b} $", cmd)
+	cmdSl := strings.Split(cmd, " ")
+	out, err := exec.Command(cmdSl[0], cmdSl[1:]...).Output()
+	if b {
+		if err != nil {
+			t.Error()
+		}
+	} else {
+		if err == nil {
+			t.Error()
+		}
 	}
 	fmt.Println(string(out))
 }
