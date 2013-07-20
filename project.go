@@ -163,9 +163,8 @@ func (proj Project) CreateFileFromTemplate(file, temp string) {
 func GoGetName(host, userid, name string) string {
 	if host == GOOGLE {
 		return filepath.Join(host, "p", name)
-	} else {
-		return filepath.Join(host, userid, name)
 	}
+	return filepath.Join(host, userid, name)
 }
 
 // ParseName using character / is used as delimiter
