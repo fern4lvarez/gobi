@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"github.com/kless/validate"
 	c "github.com/wsxiaoys/terminal/color"
 	"io/ioutil"
@@ -43,25 +42,25 @@ func NewConfig() *UserConfig {
 	// Prompted user configuration form
 	var name, userName, host, email, license string
 	name = promptField(validateName,
-		"@{!b}Name: ",
-		"@{!y}Please insert your name.",
-		"@{!b}Name: ")
+		promptForm["name"]["welcome"],
+		promptForm["name"]["error"],
+		promptForm["name"]["welcome2"])
 	userName = promptField(validateUserName,
-		"@{!b}Username: ",
-		"@{!y}Wrong username, try again.",
-		"@{!b}Username: ")
+		promptForm["userName"]["welcome"],
+		promptForm["userName"]["error"],
+		promptForm["userName"]["welcome2"])
 	host = promptField(validateHost,
-		"@{!b}Host @b(github.com, bitbucket.org or code.google.com)@{!b}: ",
-		"@{!y}Invalid host, try again. @yOptions: github.com, bitbucket.org or code.google.com",
-		"@{!b}Host: ")
+		promptForm["host"]["welcome"],
+		promptForm["host"]["error"],
+		promptForm["host"]["welcome2"])
 	email = promptField(validateEmail,
-		"@{!b}Email: ",
-		"@{!y}Invalid Email address, try again.",
-		"@{!b}Email: ")
+		promptForm["email"]["welcome"],
+		promptForm["email"]["error"],
+		promptForm["email"]["welcome2"])
 	license = promptField(validateLicense,
-		"@{!b}License: ",
-		"@{!y}Invalid license, try again. @yOptions: AGPL, Apache, BSD, BSD3-Clause, Eclipse, GPLv2, GPLv3, LGPLv2.1, LGPLv3, MIT, Mozilla, PublicDomain, WTFPL, no-license.",
-		"@{!b}License: ")
+		promptForm["license"]["welcome"],
+		promptForm["license"]["error"],
+		promptForm["license"]["welcome2"])
 
 	// User config creation
 	conf := &UserConfig{name, userName, host, email, license}
@@ -116,8 +115,8 @@ func validateUserName(username string) bool {
 // validateHost: Can only be GITHUB, BITBUCKET OR GOOGLE
 func validateHost(host string) bool {
 	hosts := []string{GITHUB, BITBUCKET, GOOGLE}
-	for i := range hosts {
-		if strings.EqualFold(host, hosts[i]) {
+	for _, h := range hosts {
+		if strings.EqualFold(host, h) {
 			return true
 		}
 	}
@@ -128,18 +127,15 @@ func validateHost(host string) bool {
 func validateEmail(email string) bool {
 	exp, err := regexp.Compile(validate.RE_BASIC_EMAIL)
 	if err != nil {
-		fmt.Println(err)
+		return false
 	}
 	return exp.MatchString(email)
 }
 
 // validateLicense: Must be one of the supported licenses
 func validateLicense(license string) bool {
-	licenses := []string{"AGPL", "Apache", "BSD", "BSD3-Clause", "Eclipse",
-		"GPLv2", "GPLv3", "LGPLv2.1", "LGPLv3",
-		"MIT", "Mozilla", "PublicDomain", "WTFPL", "no-license"}
-	for i := range licenses {
-		if strings.EqualFold(license, licenses[i]) {
+	for _, l := range licenses {
+		if strings.EqualFold(license, l) {
 			return true
 		}
 	}
