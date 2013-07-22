@@ -17,6 +17,7 @@ const logo = `
    __/ |              
   |___/  
 `
+
 // All supported licenses
 type Licenses []string
 
