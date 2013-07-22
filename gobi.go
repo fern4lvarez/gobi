@@ -16,6 +16,7 @@ func main() {
 	} else if l > 3 {
 		commandLineError(wrongNumberOfArguments)
 	} else {
+		setGobiPath()
 		user = checkConfig()
 		switch first := os.Args[1]; first {
 		case "whoami":

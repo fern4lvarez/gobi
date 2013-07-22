@@ -106,6 +106,10 @@ In all cases `<APPNAME>` can have one or two levels and can't be empty. (Example
 ##Contribute!
 You all are welcome to take a seat and make a contribution to this repo: reviews, issues, feature suggestions, possible code or functionality enhancements... Everything is appreciated!
 
+**NOTE**: If you work on a fork of this repository, you have to export a `GOBIPATH` environment variable with the `go get` name of your fork, i.e.:
+
+    export GOBIPATH=github/YOUR_NAME/gobi
+
 
 ##License
 `gobi` is MIT licensed, see [here](https://github.com/fern4lvarez/gobi/blob/master/LICENSE)

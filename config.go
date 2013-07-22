@@ -24,6 +24,13 @@ var (
 	GOBIPATH    = filepath.Join(SRCPATH, GITHUB, "fern4lvarez", "gobi")
 )
 
+// setGobiPath where the templates and the version file will be located
+func setGobiPath() {
+	if os.Getenv("GOBIPATH") != "" {
+		GOBIPATH = filepath.Join(SRCPATH, os.Getenv("GOBIPATH"))
+	}
+}
+
 // UserConfig contains all information about the current user
 type UserConfig struct {
 	Name    string `json:"name"`
