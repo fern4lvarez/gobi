@@ -3,13 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	c "github.com/wsxiaoys/terminal/color"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	c "github.com/wsxiaoys/terminal/color"
 )
 
 var exists = false
@@ -124,11 +125,11 @@ func assertCommand(t *testing.T, b bool, cmd string) {
 	out, err := exec.Command(cmdSl[0], cmdSl[1:]...).Output()
 	if b {
 		if err != nil {
-			t.Error()
+			t.Error("Error.")
 		}
 	} else {
 		if err == nil {
-			t.Error()
+			t.Error("Error.")
 		}
 	}
 	fmt.Println(string(out))

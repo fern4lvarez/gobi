@@ -82,12 +82,12 @@ func (k Type) String() string {
 	case Slice:
 		return "[]"
 	//case Map:
-		//return "map"
+	//return "map"
 	//case Struct:
-		//return "struct"
+	//return "struct"
 	case Time:
 		return "time"
-	//case Nil:
+		//case Nil:
 		//return "NULL"
 	}
 	panic("unimplemented")

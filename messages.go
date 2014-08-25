@@ -1,9 +1,10 @@
 package main
 
 import (
-	c "github.com/wsxiaoys/terminal/color"
 	"os"
 	"strings"
+
+	c "github.com/wsxiaoys/terminal/color"
 )
 
 // gobi logo

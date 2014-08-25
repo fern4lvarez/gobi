@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/kless/datautil/valid"
-	c "github.com/wsxiaoys/terminal/color"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/kless/datautil/valid"
+	c "github.com/wsxiaoys/terminal/color"
 )
 
 // Global variables used in the whole application
@@ -87,10 +88,8 @@ func checkConfig() UserConfig {
 	b, errRead := ioutil.ReadFile(GOBI_CONFIG)
 	if errUnmarshal := json.Unmarshal(b, &user); errRead != nil || errUnmarshal != nil {
 		return *NewConfig()
-	} else {
-		return user
 	}
-	return UserConfig{}
+	return user
 }
 
 // promptField to validate and save input value
