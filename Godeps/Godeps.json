@@ -1,0 +1,19 @@
+{
+	"ImportPath": "github.com/fern4lvarez/gobi",
+	"GoVersion": "go1.3",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/go.net/publicsuffix",
+			"Comment": "null-144",
+			"Rev": "ad01a6fcc8a19d3a4478c836895ffe883bd2ceab"
+		},
+		{
+			"ImportPath": "github.com/kless/datautil",
+			"Rev": "471d3c56adada3c414210b090b96ba3b7300d355"
+		},
+		{
+			"ImportPath": "github.com/wsxiaoys/terminal/color",
+			"Rev": "5668e431776a7957528361f90ce828266c69ed08"
+		}
+	]
+}
