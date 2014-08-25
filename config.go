@@ -3,12 +3,11 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/kless/validate"
+	"github.com/kless/datautil/valid"
 	c "github.com/wsxiaoys/terminal/color"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 )
 
@@ -132,11 +131,13 @@ func validateHost(host string) bool {
 
 // validateEmail: Must have a correct email format
 func validateEmail(email string) bool {
-	exp, err := regexp.Compile(validate.RE_BASIC_EMAIL)
+	schema := valid.NewSchema(0)
+
+	_, err := valid.Email(schema, email)
 	if err != nil {
 		return false
 	}
-	return exp.MatchString(email)
+	return true
 }
 
 // validateLicense: Must be one of the supported licenses
